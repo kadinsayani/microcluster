@@ -7,7 +7,7 @@ on:
     - cron: '0 0 * * *'  # Test TICS daily
 
 env:
-  GOCOVERDIR: ${{ ( github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' ) && '/home/runner/work/microcluster/microcluster/cover' || '' }}
+  GOCOVERDIR: ${{ ( github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event_name == 'push' ) && '/home/runner/work/microcluster/microcluster/cover' || '' }}
 
 permissions:
   contents: read
@@ -106,7 +106,7 @@ jobs:
     name: Tiobe TICS
     runs-on: ubuntu-22.04
     needs: code-tests
-    if: ${{ ( github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' ) && github.ref_name == 'v3' && github.repository == 'canonical/microcluster' }}
+    if: ${{ ( github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event_name == 'push' ) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -157,4 +157,3 @@ jobs:
           installTics: true
           calc: ALL
           tmpdir: /tmp/tics
-          branchname: ${{ github.ref_name }}
